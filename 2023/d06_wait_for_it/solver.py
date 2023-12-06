@@ -9,10 +9,11 @@ from pathlib import Path
 import math
 
 SCRIPT_DIR = Path(__file__).parent
-#INPUT_FILE = Path(SCRIPT_DIR, "input/sample_input.txt")
-INPUT_FILE = Path(SCRIPT_DIR, "input/input.txt")
+INPUT_FILE = Path(SCRIPT_DIR, "input/sample_input.txt")
+#INPUT_FILE = Path(SCRIPT_DIR, "input/input.txt")
 
-def test(racetime: int, racedist: int):
+# Method found on internet, way faster than mine :(
+def internet_response(racetime: int, racedist: int):
     b1 = int((racetime + math.sqrt(pow(racetime, 2) - 4 * racedist))/2)
     b2 = int((racetime - math.sqrt(pow(racetime, 2) - 4 * racedist))/2)
 
@@ -27,12 +28,12 @@ def winning_options(racetime: int, racedist: int) -> int:
     return iterate(range(racetime - 1, 1, -1)) - iterate(range(1, racetime)) + 1
 
 def part_one(races: list) -> int:
-    return math.prod(winning_options(*d) for d in races)
+    return math.prod(internet_response(*d) for d in races)
 
 def part_two(times: list, dists: list) -> int:
     racetime = int("".join(str(t) for t in times))
     racedist = int("".join(str(d) for d in dists))
-    return test(racetime, racedist)
+    return internet_response(racetime, racedist)
 
 def main():
     lines = open(INPUT_FILE, mode="rt").read().strip().split('\n')
