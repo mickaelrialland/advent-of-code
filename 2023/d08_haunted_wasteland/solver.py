@@ -1,8 +1,8 @@
 """
 Author: Mickaël
-Date: 07/12/2023
+Date: 08/12/2023
 
-Solving https://adventofcode.com/2023/day/7
+Solving https://adventofcode.com/2023/day/8
 """
 import time
 from pathlib import Path
@@ -27,12 +27,12 @@ def parse_datas():
 
     return instructions, nodes
 
-def part_one(instructions, nodes) -> int :
+def part_one(instructions, nodes, start_node = "AAA", end_node = "ZZZ") -> int :
     total_steps = 0
     instruction_index = 0
-    node = 'AAA'                # start from the AAA node
+    node = start_node                # start from the AAA node
 
-    while node != 'ZZZ':
+    while node[-len(end_node):] != end_node:
         node = nodes[node][instructions[instruction_index]]
         total_steps += 1
         instruction_index += 1
@@ -45,16 +45,9 @@ def part_two(instructions, nodes) -> int:
     total_steps_all_directions = []
     start_nodes = [k for k, v in nodes.items() if k[-1] == 'A']
 
-    for node in start_nodes:
-        instruction_index = 0
-        total_steps = 0
-        while node[-1] != 'Z':
-            node = nodes[node][instructions[instruction_index]]
-            total_steps += 1
-            instruction_index += 1
-            if instruction_index >= len(instructions):
-                instruction_index = 0
-        total_steps_all_directions.append(total_steps)
+    for start_node in start_nodes:
+        total_steps_all_directions.append(part_one(instructions, nodes, start_node, "Z"))
+        
 
     total = total_steps_all_directions[0]
     for step in total_steps_all_directions[1:]:
